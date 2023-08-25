@@ -1,18 +1,23 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
-import { insertItem } from "../services/item.service";
+import { getCars, getCar, insertCar } from "../services/item.service";
 
 // al ser MVC, aca solo voy a manejar la data a traves de http (request y response)
 
-const getItem = (req: Request, res: Response) => {
+const getItem = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+    const item = await getCar(id);
+    res.send(item);
   } catch (error: any) {
     handleHttp(res, "ERROR_GET_ITEM", error);
   }
 };
 
-const getItems = (req: Request, res: Response) => {
+const getItems = async (req: Request, res: Response) => {
   try {
+    const items = await getCars();
+    res.send(items);
   } catch (error: any) {
     handleHttp(res, "ERROR_GET_ITEMS", error);
   }
@@ -27,7 +32,7 @@ const updateItem = (req: Request, res: Response) => {
 
 const postItem = async ({ body }: Request, res: Response) => {
   try {
-    const responseItem = await insertItem(body);
+    const responseItem = await insertCar(body);
     res.send(responseItem);
   } catch (error: any) {
     handleHttp(res, "ERROR_POST_ITEM", error);
