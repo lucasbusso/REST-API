@@ -5,7 +5,7 @@ import { readdirSync } from "fs";
 const PATH_ROUTER = `${__dirname}`;
 const router = Router();
 const cleanFileName = (filename: string) => {
-  const file = filename.split(".ts").shift();
+  const file = filename.split(".").shift();
   return file;
 };
 // readdirSync: devuele un array de las rutas (archivos) del directorio actual
@@ -14,7 +14,7 @@ const cleanFileName = (filename: string) => {
 readdirSync(PATH_ROUTER).filter((filename) => {
   const cleanName = cleanFileName(filename);
   if (cleanName !== "index") {
-    import(`./${cleanName}`).then((moduleRouter) => {
+    import(`./${cleanName}.route`).then((moduleRouter) => {
       // console.log(`Ruta: ${cleanName}`);
       router.use(`/${cleanName}`, moduleRouter.router);
     });
