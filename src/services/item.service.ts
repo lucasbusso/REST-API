@@ -1,5 +1,5 @@
 import { Car } from "../interfaces/car.interface";
-import ItemModel from "../models/item.schema";
+import { ItemModel } from "../models/item.schema";
 
 const insertCar = async (item: Car): Promise<Car> => {
   const responseInsert = await ItemModel.create(item);
@@ -16,4 +16,15 @@ const getCar = async (id: string): Promise<Car> => {
   return responseGet as Car;
 };
 
-export { insertCar, getCars, getCar };
+const updateCar = async (id: string, data: Car) => {
+  const responseUpdate = await ItemModel.findOneAndUpdate({ _id: id }, data, {
+    new: true,
+  });
+  return responseUpdate;
+};
+
+const deleteCar = async (id: string): Promise<void> => {
+  const response = await ItemModel.remove({ _id: id });
+  return response;
+};
+export { insertCar, getCars, getCar, updateCar, deleteCar };
