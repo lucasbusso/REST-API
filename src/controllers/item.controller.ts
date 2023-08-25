@@ -14,7 +14,8 @@ const getItem = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const item = await getCar(id);
-    res.send(item);
+    const data = item ? item : "ITEM_DOESNT_EXIST";
+    res.send(data);
   } catch (error: any) {
     handleHttp(res, "ERROR_GET_ITEM", error);
   }
