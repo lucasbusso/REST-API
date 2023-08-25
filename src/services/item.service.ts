@@ -1,3 +1,4 @@
+import { DeleteResult, UpdateResult } from "mongodb";
 import { Car } from "../interfaces/car.interface";
 import { ItemModel } from "../models/item.schema";
 
@@ -23,8 +24,8 @@ const updateCar = async (id: string, data: Car) => {
   return responseUpdate;
 };
 
-const deleteCar = async (id: string): Promise<void> => {
-  const response = await ItemModel.remove({ _id: id });
+const deleteCar = async (id: string): Promise<DeleteResult> => {
+  const response = await ItemModel.deleteOne({ _id: id });
   return response;
 };
 export { insertCar, getCars, getCar, updateCar, deleteCar };
