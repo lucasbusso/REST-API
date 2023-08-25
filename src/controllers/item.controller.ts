@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { handleHttp } from "../utils/error.handle";
 
+// al ser MVC, aca solo voy a manejar la data a traves de http (request y response)
+
 const getItem = (req: Request, res: Response) => {
   try {
   } catch (error) {
@@ -22,8 +24,9 @@ const updateItem = (req: Request, res: Response) => {
   }
 };
 
-const postItem = (req: Request, res: Response) => {
+const postItem = ({ body }: Request, res: Response) => {
   try {
+    res.send(body);
   } catch (error) {
     handleHttp(res, "ERROR_POST_ITEM");
   }

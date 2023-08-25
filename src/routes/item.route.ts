@@ -1,9 +1,18 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
+import {
+  deleteItem,
+  getItem,
+  getItems,
+  postItem,
+  updateItem,
+} from "../controllers/item.controller";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.send({ data: "modelos" });
-});
+router.get("/:id", getItem);
+router.get("/", getItems);
+router.put("/:id", updateItem);
+router.post("/", postItem);
+router.delete("/:id", deleteItem);
 
 export { router };
