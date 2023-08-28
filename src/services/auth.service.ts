@@ -1,3 +1,4 @@
+import { compare } from "bcryptjs";
 import { Auth } from "../interfaces/auth.interface";
 import { User } from "../interfaces/user.interface";
 import { UserModel } from "../models/user.schema";
@@ -16,6 +17,13 @@ const registerNewUser = async (authUser: User) => {
   return registerNewUser;
 };
 
-const loginUser = async () => {};
+const loginUser = async ({ email, password }: Auth) => {
+  const checkIfExists = await UserModel.findOne({ email: email });
+  if (!checkIfExists) return "USER_NO_TFOUND";
+  const passwordEncrypted = checkIfExists.password;
+  const isCorrect = await compare(password, passwordEncrypted);
+  if (!isCorrect) return "WRON_PASSWORD";
+  return checkIfExists;
+};
 
 export { registerNewUser, loginUser };
