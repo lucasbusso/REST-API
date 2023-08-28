@@ -6,10 +6,11 @@ import {
   postItem,
   updateItem,
 } from "../controllers/item.controller";
+import { logMiddleware } from "../middlewares/log";
 
 const router = Router();
 
-router.get("/:id", getItem);
+router.get("/:id", logMiddleware, getItem);
 router.get("/", getItems);
 router.put("/:id", updateItem);
 router.post("/", postItem);
