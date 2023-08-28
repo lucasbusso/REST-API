@@ -3,6 +3,7 @@ import { Auth } from "../interfaces/auth.interface";
 import { User } from "../interfaces/user.interface";
 import { UserModel } from "../models/user.schema";
 import { encrypt } from "../utils/bcrypt.handle";
+import { generateToken } from "../utils/jwt.handle";
 
 const registerNewUser = async (authUser: User) => {
   const { email, password, name } = authUser;
@@ -23,7 +24,12 @@ const loginUser = async ({ email, password }: Auth) => {
   const passwordEncrypted = checkIfExists.password;
   const isCorrect = await compare(password, passwordEncrypted);
   if (!isCorrect) return "WRON_PASSWORD";
-  return checkIfExists;
+  const token = generateToken(checkIfExists.email);
+  const data = {
+    token,
+    data: checkIfExists,
+  };
+  return data;
 };
 
 export { registerNewUser, loginUser };
