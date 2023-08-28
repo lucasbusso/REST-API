@@ -1,20 +1,24 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { RequestExt } from "../interfaces/reqExt.interface";
 import { verifyToken } from "../utils/jwt.handle";
 
-const checkJWT = (req: Request, res: Response, next: NextFunction) => {
+const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
   try {
-    const jwtRaw = req.headers.authorization || "";
-    const jwt = jwtRaw.split(" ").pop();
-    const user = verifyToken(`${jwt}`);
-    console.log(user);
-    if (!user) {
-      res.status(401).send("PERMISSION_DENIED");
+    const jwtByUser = req.headers.authorization || "";
+    const jwt = jwtByUser.split(" ").pop();
+    const isUser = verifyToken(`${jwt}`) as { id: string };
+    if (!isUser) {
+      res.status(401);
+      res.send("PERMISSION_DENIED");
     } else {
+      req.user = isUser;
       next();
     }
-  } catch (error) {
-    res.status(400).send("CANT_ACCESS");
+  } catch (e) {
+    console.log({ e });
+    res.status(400);
+    res.send("PERMISSIN_DENIED");
   }
 };
 
-export { checkJWT };
+export { checkJwt };
