@@ -7,6 +7,14 @@ const registerController = async ({ body }: Request, res: Response) => {
   res.status(200).send(responseUser);
 };
 
-const loginController = async (req: Request, res: Response) => {};
+const loginController = async ({ body }: Request, res: Response) => {
+  const { email, password } = body;
+  const responseUser = await loginUser({ email, password });
+  if (responseUser === "WRON_PASSWORD") {
+    return res.status(403).send(responseUser);
+  } else {
+    res.status(200).send(responseUser);
+  }
+};
 
 export { registerController, loginController };
