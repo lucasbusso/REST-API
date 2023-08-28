@@ -23,7 +23,7 @@ const loginUser = async ({ email, password }: Auth) => {
   if (!checkIfExists) return "USER_NO_TFOUND";
   const passwordEncrypted = checkIfExists.password;
   const isCorrect = await compare(password, passwordEncrypted);
-  if (!isCorrect) return "WRON_PASSWORD";
+  if (!isCorrect) return "WRONG_PASSWORD";
   const token = generateToken(checkIfExists.email);
   const data = {
     token,
